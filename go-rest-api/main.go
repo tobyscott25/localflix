@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"localflix/middleware"
 
@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+
 	serveApplication()
 }
 
@@ -24,45 +25,44 @@ func healthCheckHandler(c *gin.Context) {
 
 func getFileListHandler(c *gin.Context) {
 
-	// get the list of files in the assets directory
-	// and return them as a JSON array
-	files, err := getFiles("assets")
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-	}
+	files := getFiles("assets")
 
 	c.JSON(http.StatusOK, gin.H{
 		"files": files,
 	})
 }
 
-func getFiles(dir string) ([]string, error) {
+func getFiles(dirPath string) []string {
+	var files []string
 
-	files, err := ioutil.ReadDir("assets")
+	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil // Skip directories
+		}
+
+		files = append(files, path)
+		return nil
+	})
+
 	if err != nil {
-		log.Fatal(err)
-	}
-	fileNames := make([]string, len(files))
-	for i, file := range files {
-		fileNames[i] = file.Name()
+		fmt.Printf("Error walking the path %s: %v\n", dirPath, err)
 	}
 
-	return fileNames, nil
+	return files
 }
 
 func serveApplication() {
-	// create new gin router
+
 	router := gin.Default()
 
-	// Enable CORS
 	router.Use(middleware.AllowAllCORS())
 
 	router.GET("/", healthCheckHandler)
-
 	router.GET("/files", getFileListHandler)
-
 	router.Static("/assets", "./assets")
 
 	router.Run(":8080")
