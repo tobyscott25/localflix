@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-
 	serveApplication()
 }
 
@@ -44,7 +43,7 @@ func getFiles(dirPath string) []string {
 			return nil // Skip directories
 		}
 
-		files = append(files, path)
+		files = append(files, "/"+path)
 		return nil
 	})
 
