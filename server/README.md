@@ -1,4 +1,6 @@
-Static file server
+## Static file server
+
+This serves static files from the `assets` directory over HTTP for the client to consume.
 
 Install dependancies
 
