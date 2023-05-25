@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"localflix/middleware"
+	"localflix/server/middleware"
 
 	"github.com/gin-gonic/gin"
 )
