@@ -1,11 +1,11 @@
 import { FunctionComponent, ReactElement, useState, useEffect } from 'react'
 import { Flex } from '@chakra-ui/react'
 import { Video } from './Video'
-import { FilesEndpointReturnShape } from '../../../utils/api/helper'
+import { File, FilesEndpointReturnShape } from '../../../utils/api/files'
 import { getFilesList } from '../../../utils/api/files'
 
 export const VideoSelection: FunctionComponent = (): ReactElement => {
-	const [files, setFiles] = useState<string[]>()
+	const [files, setFiles] = useState<File[]>()
 
 	useEffect(() => {
 		async function fetchFiles() {
@@ -22,11 +22,9 @@ export const VideoSelection: FunctionComponent = (): ReactElement => {
 	}, [])
 
 	return (
-		<Flex>
+		<Flex wrap={'wrap'} gap={5}>
 			{files &&
-				files.map((fileName) => (
-					<Video key={fileName} fileName={fileName} />
-				))}
+				files.map((file) => <Video key={file.name} file={file} />)}
 		</Flex>
 	)
 }

@@ -8,11 +8,10 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 	const params = useParams()
 	return (
 		<Box>
-			<Text fontSize={'xl'}>{params.fileName}</Text>
 			<Box
 				as="video"
 				controls
-				src={`${baseUrl}${params.fileName}`}
+				src={`${baseUrl}/assets/${params.fileName}`}
 				// poster="thumbnail_image_url_goes_here"
 				// objectFit="contain"
 				// sx={{
@@ -20,6 +19,17 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 				// }}
 				maxH={'50vh'}
 			/>
+			<Box my={6}>
+				<Text fontSize={'xl'} fontWeight={'bold'}>
+					{params.fileName}
+				</Text>
+				<Box mt={2}>
+					<Text>Last Modified: </Text>
+					<Text>Size: </Text>
+				</Box>
+			</Box>
+
+			<hr />
 			<Text fontSize={'xl'}>More videos</Text>
 			<VideoSelection />
 		</Box>

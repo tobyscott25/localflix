@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"localflix/server/helper"
 	"localflix/server/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,15 @@ func healthCheckHandler(c *gin.Context) {
 	})
 }
 
+type FileInfoData struct {
+	Name string `json:"name"`
+	Size string `json:"size"`
+	Path string `json:"path"`
+	// Mode    os.FileMode `json:"mode"`
+	ModTime string `json:"lastModified"`
+	// IsDir   bool        `json:"isDir"`
+}
+
 func getFileListHandler(c *gin.Context) {
 
 	files := getFiles("assets")
@@ -31,8 +41,8 @@ func getFileListHandler(c *gin.Context) {
 	})
 }
 
-func getFiles(dirPath string) []string {
-	var files []string
+func getFiles(dirPath string) []FileInfoData {
+	var files []FileInfoData
 
 	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -43,7 +53,16 @@ func getFiles(dirPath string) []string {
 			return nil // Skip directories
 		}
 
-		files = append(files, "/"+path)
+		fileData := FileInfoData{
+			Name:    info.Name(),
+			Size:    helper.ByteCountSI(info.Size()),
+			Path:    "/" + path,
+			ModTime: info.ModTime().String(),
+			// Mode:    info.Mode(),
+			// IsDir:   info.IsDir(),
+		}
+
+		files = append(files, fileData)
 		return nil
 	})
 

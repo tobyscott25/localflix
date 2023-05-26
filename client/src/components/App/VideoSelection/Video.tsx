@@ -1,39 +1,81 @@
 import { FunctionComponent, ReactElement } from 'react'
 import { Box, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
-// import { FilesEndpointReturnShape } from '../../../utils/api/helper'
+import { File } from '../../../utils/api/files'
 
 interface VideoProps {
-	fileName: string
+	file: File
 }
 
 export const Video: FunctionComponent<VideoProps> = ({
-	fileName,
+	file,
 }): ReactElement => {
 	const navigate = useNavigate()
+
+	function formatDate(dateString: string) {
+		// const date = new Date(dateString)
+
+		// Extracting date components
+		const year = parseInt(dateString.substring(0, 4))
+		const month = parseInt(dateString.substring(5, 7)) - 1 // Month is zero-based (0 - 11)
+		const day = parseInt(dateString.substring(8, 10))
+		const hour = parseInt(dateString.substring(11, 13))
+		const minute = parseInt(dateString.substring(14, 16))
+		const second = parseInt(dateString.substring(17, 19))
+
+		// Create a new Date object with the extracted components
+		const date = new Date(year, month, day, hour, minute, second)
+
+		console.log('dateString', dateString)
+		console.log('date', date)
+
+		// Options for formatting the date and time
+		const options: Intl.DateTimeFormatOptions = {
+			weekday: 'long',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			second: 'numeric',
+			timeZoneName: 'short',
+		}
+
+		// Convert the date to a human-readable format
+		const formattedDate = date.toLocaleString('en-US', options)
+
+		console.log('formattedDate', formattedDate)
+
+		return formattedDate
+	}
+
 	return (
 		<Box
 			width={'300px'}
 			onClick={() => {
 				console.log('clicked')
-				navigate(`/video/${encodeURIComponent(fileName)}`)
+				navigate(`/video/${encodeURIComponent(file.name)}`)
 			}}
 			borderRadius={'md'}
-			shadow={'md'}
+			// shadow={'md'}
 			_hover={{
 				shadow: 'lg',
 				cursor: 'pointer',
 			}}
-			m={2}
+			// m={2}
 			p={4}
 		>
 			<Box
-				height={'30px'}
+				height={'150px'}
 				bgColor={'grey'}
 				borderRadius={'md'}
 				mb={2}
 			></Box>
-			<Text fontWeight={'bold'}>{fileName}</Text>
+			<Text fontWeight={'bold'}>{file.name}</Text>
+			<Text fontSize={'sm'}>Size: {file.size}</Text>
+			<Text fontSize={'sm'}>
+				Last modified: {formatDate(file.lastModified)}
+			</Text>
 		</Box>
 	)
 }
