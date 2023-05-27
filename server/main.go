@@ -18,26 +18,21 @@ func main() {
 }
 
 func healthCheckHandler(c *gin.Context) {
-
 	c.JSON(http.StatusOK, gin.H{
 		"healthy": true,
 	})
 }
 
 type FileInfoData struct {
-	Name string `json:"name"`
-	Size string `json:"size"`
-	Path string `json:"path"`
-	// Mode    os.FileMode `json:"mode"`
-	ModTime string `json:"lastModified"`
-	// IsDir   bool        `json:"isDir"`
+	Name        string `json:"name"`
+	Size        string `json:"size"`
+	Path        string `json:"path"`
+	ModTime     string `json:"lastModified"`
 	ChecksumSHA string `json:"checksumSHA256"`
 }
 
 func getFileListHandler(c *gin.Context) {
-
 	files := getFiles("assets")
-
 	c.JSON(http.StatusOK, gin.H{
 		"files": files,
 	})
@@ -56,12 +51,10 @@ func getFiles(dirPath string) []FileInfoData {
 		}
 
 		fileData := FileInfoData{
-			Name:    info.Name(),
-			Size:    helper.ByteCountSI(info.Size()),
-			Path:    "/" + path,
-			ModTime: info.ModTime().Format(time.RFC3339),
-			// Mode:    info.Mode(),
-			// IsDir:   info.IsDir(),
+			Name:        info.Name(),
+			Size:        helper.ByteCountSI(info.Size()),
+			Path:        "/" + path,
+			ModTime:     info.ModTime().Format(time.RFC3339),
 			ChecksumSHA: helper.CalculateSHA256Checksum(path),
 		}
 
@@ -78,8 +71,7 @@ func getFiles(dirPath string) []FileInfoData {
 
 func getFileDetailsHandler(c *gin.Context) {
 	fileName := c.Param("fileName")
-
-	filePath := "assets/" + fileName
+	filePath := filepath.Join("assets", fileName)
 
 	fileInfo, err := os.Stat(filePath)
 	if err != nil {
@@ -107,16 +99,14 @@ func getFileDetailsHandler(c *gin.Context) {
 		Size:        helper.ByteCountSI(fileInfo.Size()),
 		Path:        "/" + fileName,
 		ModTime:     fileInfo.ModTime().Format(time.RFC3339),
-		ChecksumSHA: helper.CalculateSHA256Checksum(fileName),
+		ChecksumSHA: helper.CalculateSHA256Checksum(filePath),
 	}
 
 	c.JSON(http.StatusOK, fileData)
 }
 
 func serveApplication() {
-
 	router := gin.Default()
-
 	router.Use(middleware.AllowAllCORS())
 
 	router.GET("/", healthCheckHandler)
@@ -124,6 +114,11 @@ func serveApplication() {
 	router.GET("/files/:fileName", getFileDetailsHandler)
 	router.Static("/assets", "./assets")
 
-	router.Run(":8080")
+	err := router.Run(":8080")
+	if err != nil {
+		fmt.Printf("Failed to start the server: %v", err)
+		return
+	}
+
 	fmt.Println("Server running on port 8080")
 }
