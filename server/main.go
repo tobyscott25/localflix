@@ -74,6 +74,42 @@ func getFiles(dirPath string) []FileInfoData {
 	return files
 }
 
+func getFileDetailsHandler(c *gin.Context) {
+	fileName := c.Param("fileName")
+
+	filePath := "assets/" + fileName
+
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "File not found",
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Internal server error",
+			})
+		}
+		return
+	}
+
+	if fileInfo.IsDir() {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid file",
+		})
+		return
+	}
+
+	fileData := FileInfoData{
+		Name:    fileInfo.Name(),
+		Size:    helper.ByteCountSI(fileInfo.Size()),
+		Path:    "/" + fileName,
+		ModTime: fileInfo.ModTime().Format(time.RFC3339),
+	}
+
+	c.JSON(http.StatusOK, fileData)
+}
+
 func serveApplication() {
 
 	router := gin.Default()
@@ -82,6 +118,7 @@ func serveApplication() {
 
 	router.GET("/", healthCheckHandler)
 	router.GET("/files", getFileListHandler)
+	router.GET("/files/:fileName", getFileDetailsHandler)
 	router.Static("/assets", "./assets")
 
 	router.Run(":8080")
