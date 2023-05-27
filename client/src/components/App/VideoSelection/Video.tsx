@@ -20,18 +20,18 @@ export const Video: FunctionComponent<VideoProps> = ({
 
 		// Options for formatting the date and time
 		const options: Intl.DateTimeFormatOptions = {
-			weekday: 'long',
+			weekday: 'short',
 			year: 'numeric',
-			month: 'long',
+			month: 'numeric',
 			day: 'numeric',
 			hour: 'numeric',
 			minute: 'numeric',
-			second: 'numeric',
-			timeZoneName: 'short',
+			// second: 'numeric',
+			// timeZoneName: 'short',
 		}
 
 		// Convert the date to a human-readable format
-		const formattedDate = date.toLocaleString('en-US', options)
+		const formattedDate = date.toLocaleString('en-AU', options)
 
 		console.log('formattedDate', formattedDate)
 
