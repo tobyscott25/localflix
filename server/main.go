@@ -31,6 +31,7 @@ type FileInfoData struct {
 	// Mode    os.FileMode `json:"mode"`
 	ModTime string `json:"lastModified"`
 	// IsDir   bool        `json:"isDir"`
+	ChecksumSHA string `json:"checksumSHA256"`
 }
 
 func getFileListHandler(c *gin.Context) {
@@ -61,6 +62,7 @@ func getFiles(dirPath string) []FileInfoData {
 			ModTime: info.ModTime().Format(time.RFC3339),
 			// Mode:    info.Mode(),
 			// IsDir:   info.IsDir(),
+			ChecksumSHA: helper.CalculateSHA256Checksum(path),
 		}
 
 		files = append(files, fileData)
@@ -101,10 +103,11 @@ func getFileDetailsHandler(c *gin.Context) {
 	}
 
 	fileData := FileInfoData{
-		Name:    fileInfo.Name(),
-		Size:    helper.ByteCountSI(fileInfo.Size()),
-		Path:    "/" + fileName,
-		ModTime: fileInfo.ModTime().Format(time.RFC3339),
+		Name:        fileInfo.Name(),
+		Size:        helper.ByteCountSI(fileInfo.Size()),
+		Path:        "/" + fileName,
+		ModTime:     fileInfo.ModTime().Format(time.RFC3339),
+		ChecksumSHA: helper.CalculateSHA256Checksum(fileName),
 	}
 
 	c.JSON(http.StatusOK, fileData)
