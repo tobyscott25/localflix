@@ -13,18 +13,7 @@ export const Video: FunctionComponent<VideoProps> = ({
 	const navigate = useNavigate()
 
 	function formatDate(dateString: string) {
-		// const date = new Date(dateString)
-
-		// Extracting date components
-		const year = parseInt(dateString.substring(0, 4))
-		const month = parseInt(dateString.substring(5, 7)) - 1 // Month is zero-based (0 - 11)
-		const day = parseInt(dateString.substring(8, 10))
-		const hour = parseInt(dateString.substring(11, 13))
-		const minute = parseInt(dateString.substring(14, 16))
-		const second = parseInt(dateString.substring(17, 19))
-
-		// Create a new Date object with the extracted components
-		const date = new Date(year, month, day, hour, minute, second)
+		const date = new Date(dateString)
 
 		console.log('dateString', dateString)
 		console.log('date', date)

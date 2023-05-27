@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"localflix/server/helper"
 	"localflix/server/middleware"
@@ -57,7 +58,7 @@ func getFiles(dirPath string) []FileInfoData {
 			Name:    info.Name(),
 			Size:    helper.ByteCountSI(info.Size()),
 			Path:    "/" + path,
-			ModTime: info.ModTime().String(),
+			ModTime: info.ModTime().Format(time.RFC3339),
 			// Mode:    info.Mode(),
 			// IsDir:   info.IsDir(),
 		}
