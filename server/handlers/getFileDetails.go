@@ -37,7 +37,7 @@ func GetFileDetailsHandler(c *gin.Context) {
 
 	fileData := helper.FileInfoData{
 		Name:        fileInfo.Name(),
-		Size:        helper.ByteCountSI(fileInfo.Size()),
+		Size:        helper.HumanReadableFileSize(fileInfo.Size()),
 		Path:        "/" + fileName,
 		ModTime:     fileInfo.ModTime().Format(time.RFC3339),
 		ChecksumSHA: helper.CalculateSHA256Checksum(filePath),

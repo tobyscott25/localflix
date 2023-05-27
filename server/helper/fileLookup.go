@@ -2,6 +2,7 @@ package helper
 
 import (
 	"fmt"
+	"localflix/server/validation"
 	"os"
 	"path/filepath"
 	"time"
@@ -27,9 +28,13 @@ func GetFiles(dirPath string) []FileInfoData {
 			return nil // Skip directories
 		}
 
+		if !validation.IsVideoFile(info.Name()) {
+			return nil // Skip non-video files
+		}
+
 		fileData := FileInfoData{
 			Name:        info.Name(),
-			Size:        ByteCountSI(info.Size()),
+			Size:        HumanReadableFileSize(info.Size()),
 			Path:        "/" + path,
 			ModTime:     info.ModTime().Format(time.RFC3339),
 			ChecksumSHA: CalculateSHA256Checksum(path),
