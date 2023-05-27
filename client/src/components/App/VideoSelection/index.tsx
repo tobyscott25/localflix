@@ -24,7 +24,7 @@ export const VideoSelection: FunctionComponent = (): ReactElement => {
 	return (
 		<Flex wrap={'wrap'} gap={5}>
 			{files &&
-				files.map((file) => <Video key={file.name} file={file} />)}
+				files.map((file) => <Video key={file.checksum} file={file} />)}
 		</Flex>
 	)
 }

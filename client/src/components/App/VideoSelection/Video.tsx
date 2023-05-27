@@ -43,7 +43,7 @@ export const Video: FunctionComponent<VideoProps> = ({
 			width={'300px'}
 			onClick={() => {
 				console.log('clicked')
-				navigate(`/video/${encodeURIComponent(file.name)}`)
+				navigate(`/video/${encodeURIComponent(file.checksum)}`)
 			}}
 			borderRadius={'md'}
 			// shadow={'md'}

@@ -13,7 +13,7 @@ type FileInfoData struct {
 	Size        string `json:"size"`
 	Path        string `json:"path"`
 	ModTime     string `json:"lastModified"`
-	ChecksumSHA string `json:"checksumSHA256"`
+	ChecksumSHA string `json:"checksum"`
 }
 
 func GetFiles(dirPath string) []FileInfoData {

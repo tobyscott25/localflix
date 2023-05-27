@@ -5,6 +5,7 @@ export interface File {
 	size: string
 	path: string
 	lastModified: string
+	checksum: string
 }
 
 export type FilesEndpointReturnShape = {
@@ -13,4 +14,10 @@ export type FilesEndpointReturnShape = {
 
 export function getFilesList(): Promise<Response> {
 	return fetch(`${baseUrl}/files`)
+}
+
+export type VideoDetailsEndpointReturnShape = File
+
+export function getVideoDetails(checksum: string): Promise<Response> {
+	return fetch(`${baseUrl}/files/checksum/${checksum}`)
 }

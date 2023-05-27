@@ -18,7 +18,7 @@ const router: Router = createBrowserRouter([
 				element: <Home />,
 			},
 			{
-				path: 'video/:fileName',
+				path: 'video/:checksum',
 				element: <VideoViewer />,
 			},
 			{
