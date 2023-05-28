@@ -8,6 +8,7 @@ import {
 	VideoDetailsEndpointReturnShape,
 	getVideoDetails,
 } from '../../../utils/api/files'
+import { formatDate } from '../../../utils/formatDate'
 
 export const VideoViewer: FunctionComponent = (): ReactElement => {
 	const location = useLocation()
@@ -51,7 +52,13 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 					{videoDetails?.name}
 				</Text>
 				<Box mt={2}>
-					<Text>Last Modified: {videoDetails?.lastModified}</Text>
+					<Text>
+						Last Modified:{' '}
+						{formatDate(
+							videoDetails?.lastModified as string,
+							'long'
+						)}
+					</Text>
 					<Text>Size: {videoDetails?.size}</Text>
 					<Text>
 						Checksum: <Code>{videoDetails?.checksum}</Code>

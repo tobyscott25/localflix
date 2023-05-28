@@ -2,6 +2,7 @@ import { FunctionComponent, ReactElement } from 'react'
 import { Box, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { File } from '../../../utils/api/files'
+import { formatDate } from '../../../utils/formatDate'
 
 interface VideoProps {
 	file: File
@@ -11,32 +12,6 @@ export const Video: FunctionComponent<VideoProps> = ({
 	file,
 }): ReactElement => {
 	const navigate = useNavigate()
-
-	function formatDate(dateString: string) {
-		const date = new Date(dateString)
-
-		console.log('dateString', dateString)
-		console.log('date', date)
-
-		// Options for formatting the date and time
-		const options: Intl.DateTimeFormatOptions = {
-			weekday: 'short',
-			year: 'numeric',
-			month: 'numeric',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: 'numeric',
-			// second: 'numeric',
-			// timeZoneName: 'short',
-		}
-
-		// Convert the date to a human-readable format
-		const formattedDate = date.toLocaleString('en-AU', options)
-
-		console.log('formattedDate', formattedDate)
-
-		return formattedDate
-	}
 
 	return (
 		<Box
@@ -63,7 +38,7 @@ export const Video: FunctionComponent<VideoProps> = ({
 			<Text fontWeight={'bold'}>{file.name}</Text>
 			<Text fontSize={'sm'}>Size: {file.size}</Text>
 			<Text fontSize={'sm'}>
-				Last modified: {formatDate(file.lastModified)}
+				Last modified: {formatDate(file.lastModified, 'short')}
 			</Text>
 		</Box>
 	)
