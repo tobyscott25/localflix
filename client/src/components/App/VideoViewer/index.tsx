@@ -1,7 +1,7 @@
 import { FunctionComponent, ReactElement, useEffect, useState } from 'react'
 import { Box, Text } from '@chakra-ui/react'
 import { baseUrl } from '../../../utils/api/helper'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { VideoSelection } from '../VideoSelection'
 import {
 	File,
@@ -10,6 +10,7 @@ import {
 } from '../../../utils/api/files'
 
 export const VideoViewer: FunctionComponent = (): ReactElement => {
+	const location = useLocation()
 	const params = useParams()
 
 	const [videoDetails, setVideoDetails] = useState<File>()
@@ -29,7 +30,7 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 		}
 
 		fetchVideoDetails()
-	}, [])
+	}, [location])
 
 	return (
 		<Box>
