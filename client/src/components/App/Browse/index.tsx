@@ -5,7 +5,7 @@ import { VideoSelection } from '../VideoSelection'
 export const Browse: FunctionComponent = (): ReactElement => {
 	return (
 		<Box>
-			<Text>Welcome to your localflix library!</Text>
+			<Text fontSize={'2xl'}>Welcome to your library!</Text>
 			<VideoSelection />
 		</Box>
 	)
