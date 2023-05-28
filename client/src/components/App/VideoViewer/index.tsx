@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactElement, useEffect, useState } from 'react'
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Code, Text } from '@chakra-ui/react'
 import { baseUrl } from '../../../utils/api/helper'
 import { useLocation, useParams } from 'react-router-dom'
 import { VideoSelection } from '../VideoSelection'
@@ -53,7 +53,9 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 				<Box mt={2}>
 					<Text>Last Modified: {videoDetails?.lastModified}</Text>
 					<Text>Size: {videoDetails?.size}</Text>
-					<Text>Checksum: {videoDetails?.checksum}</Text>
+					<Text>
+						Checksum: <Code>{videoDetails?.checksum}</Code>
+					</Text>
 				</Box>
 			</Box>
 

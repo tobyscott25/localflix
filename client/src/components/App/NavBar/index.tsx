@@ -22,17 +22,17 @@ export const NavBar: FunctionComponent = (): ReactElement => {
 			fontSize={'sm'}
 		>
 			<Box>
-				<Link as={ReactRouterLink} to="/" mr={10}>
-					Home
+				<Link as={ReactRouterLink} to="/browse" mr={10}>
+					Browse
 				</Link>
-				<Link as={ReactRouterLink} to="/abc123" mr={10}>
-					404 Example
+				<Link as={ReactRouterLink} to="/search" mr={10}>
+					Search
 				</Link>
 			</Box>
 
 			<Box>
-				<Link as={ReactRouterLink} to="/abc123" ml={10}>
-					404 Example
+				<Link as={ReactRouterLink} to="/settings" ml={10}>
+					Settings
 				</Link>
 			</Box>
 		</Flex>

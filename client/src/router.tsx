@@ -1,9 +1,9 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { Router } from '@remix-run/router'
 
 import { AppRoot } from './components/App'
 import { RouterError } from './components/App/RouterError'
-import { Home } from './components/App/Home'
+import { Browse } from './components/App/Browse'
 import { NotFound } from './components/App/NotFound'
 import { VideoViewer } from './components/App/VideoViewer'
 
@@ -15,7 +15,11 @@ const router: Router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <Home />,
+				element: <Navigate to={'/browse'} />,
+			},
+			{
+				path: 'browse',
+				element: <Browse />,
 			},
 			{
 				path: 'video/:checksum',
