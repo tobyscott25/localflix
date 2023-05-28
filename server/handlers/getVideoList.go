@@ -3,12 +3,14 @@ package handlers
 import (
 	"localflix/server/helper"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetFileListHandler(c *gin.Context) {
-	files := helper.GetFiles("assets")
+func GetVideoListHandler(c *gin.Context) {
+	libraryLocation := os.Getenv("LIBRARY_LOCATION")
+	files := helper.GetFiles(libraryLocation)
 	c.JSON(http.StatusOK, gin.H{
 		"files": files,
 	})

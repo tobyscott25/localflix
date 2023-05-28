@@ -1,20 +1,21 @@
 package handlers
 
 import (
+	"fmt"
 	"localflix/server/helper"
 	"net/http"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetFileDetailsHandler(c *gin.Context) {
-	fileName := c.Param("fileName")
-	filePath := filepath.Join("assets", fileName)
+func GetVideoDetailsHandler(c *gin.Context) {
+	checksum := c.Param("checksum")
 
-	fileInfo, err := os.Stat(filePath)
+	fmt.Println("Checksum:", checksum)
+
+	filePath, err := helper.LookupFileByChecksum(checksum)
 	if err != nil {
 		if os.IsNotExist(err) {
 			c.JSON(http.StatusNotFound, gin.H{
@@ -28,6 +29,14 @@ func GetFileDetailsHandler(c *gin.Context) {
 		return
 	}
 
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal server error",
+		})
+		return
+	}
+
 	if fileInfo.IsDir() {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid file",
@@ -38,7 +47,7 @@ func GetFileDetailsHandler(c *gin.Context) {
 	fileData := helper.FileInfoData{
 		Name:        fileInfo.Name(),
 		Size:        helper.HumanReadableFileSize(fileInfo.Size()),
-		Path:        "/" + fileName,
+		Path:        "/" + fileInfo.Name(),
 		ModTime:     fileInfo.ModTime().Format(time.RFC3339),
 		ChecksumSHA: helper.CalculateSHA256Checksum(filePath),
 	}

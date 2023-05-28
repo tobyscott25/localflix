@@ -52,9 +52,14 @@ func GetFiles(dirPath string) []FileInfoData {
 }
 
 func LookupFileByChecksum(checksum string) (string, error) {
+
 	// Walk through the files to find a match with the given checksum
+	// Optimise this by adding a library file that stores all checksums
+
 	var filePath string
-	err := filepath.Walk("assets", func(path string, info os.FileInfo, err error) error {
+	libraryLocation := os.Getenv("LIBRARY_LOCATION")
+
+	err := filepath.Walk(libraryLocation, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}

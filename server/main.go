@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"localflix/server/handlers"
 	"localflix/server/middleware"
@@ -10,18 +11,21 @@ import (
 )
 
 func main() {
-	serveApplication()
+	libraryLocation := os.Getenv("LIBRARY_LOCATION")
+	serveApplication(libraryLocation)
 }
 
-func serveApplication() {
+func serveApplication(libraryLocation string) {
+
+	fmt.Println("Library Path:", libraryLocation)
+
 	router := gin.Default()
 	router.Use(middleware.AllowAllCORS())
 
 	router.GET("/", handlers.HealthCheckHandler)
-	router.GET("/files", handlers.GetFileListHandler)
-	router.GET("/files/:fileName", handlers.GetFileDetailsHandler)
-	router.GET("/files/checksum/:checksum", handlers.GetFileByChecksumHandler)
-	router.Static("/assets", "./assets")
+	router.GET("/files", handlers.GetVideoListHandler)
+	router.GET("/files/checksum/:checksum", handlers.GetVideoDetailsHandler)
+	router.Static("/assets", libraryLocation)
 
 	err := router.Run(":8080")
 	if err != nil {
