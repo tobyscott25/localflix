@@ -37,6 +37,7 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 			<Box
 				as="video"
 				controls
+				autoPlay
 				src={`${baseUrl}/assets${videoDetails?.path}`}
 				// poster="thumbnail_image_url_goes_here"
 				// objectFit="contain"
