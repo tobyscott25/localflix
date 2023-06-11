@@ -27,7 +27,7 @@ func serveApplication(libraryLocation string) {
 
 	router.GET("/", handlers.HealthCheckHandler)
 	router.GET("/sync", handlers.SyncLibraryHandler)
-	router.GET("/files", handlers.GetVideoListHandler)
+	router.GET("/library", handlers.GetLibraryHandler)
 	router.GET("/files/checksum/:checksum", handlers.GetVideoDetailsHandler)
 	router.Static("/assets", libraryLocation)
 

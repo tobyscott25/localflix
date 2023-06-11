@@ -45,11 +45,11 @@ func GetVideoDetailsHandler(c *gin.Context) {
 	}
 
 	fileData := helper.FileInfoData{
-		Name:        fileInfo.Name(),
-		Size:        helper.HumanReadableFileSize(fileInfo.Size()),
-		Path:        "/" + fileInfo.Name(),
-		ModTime:     fileInfo.ModTime().Format(time.RFC3339),
-		ChecksumSHA: helper.CalculateSHA256Checksum(filePath),
+		Name:         fileInfo.Name(),
+		Size:         helper.HumanReadableFileSize(fileInfo.Size()),
+		Path:         "/" + fileInfo.Name(),
+		LastModified: fileInfo.ModTime().Format(time.RFC3339),
+		ChecksumSHA:  helper.CalculateSHA256Checksum(filePath),
 	}
 
 	c.JSON(http.StatusOK, fileData)

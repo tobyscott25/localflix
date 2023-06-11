@@ -11,14 +11,15 @@ import (
 
 type LibraryData struct {
 	Version string
-	Videos  []helper.FileInfoData
+	Videos  []helper.FileInfoData // Currently only videos are supported
 }
 
 func SyncLibraryHandler(c *gin.Context) {
 
 	version := os.Getenv("localflixSemanticVersion")
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
-	videosList := helper.GetAllVideos(libraryLocation)
+
+	videosList := helper.GetAllVideosInDirectory(libraryLocation)
 
 	data := LibraryData{
 		Version: version,
