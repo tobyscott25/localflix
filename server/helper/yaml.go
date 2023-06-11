@@ -6,13 +6,13 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func WriteYAMLFile(filename string, data interface{}) error {
+func WriteYAMLFile(destinationFilename string, data interface{}) error {
 	yamlBytes, err := yaml.Marshal(data)
 	if err != nil {
 		return err
 	}
 
-	file, err := os.Create(filename)
+	file, err := os.Create(destinationFilename)
 	if err != nil {
 		return err
 	}
