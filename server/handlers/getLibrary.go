@@ -31,10 +31,5 @@ func GetLibraryHandler(c *gin.Context) {
 		log.Fatalf("error: %v", err)
 	}
 
-	result := LibraryData{
-		Version: library.Version,
-		Videos:  library.Videos,
-	}
-
-	c.JSON(http.StatusOK, result)
+	c.JSON(http.StatusOK, &library)
 }
