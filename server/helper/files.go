@@ -9,12 +9,12 @@ import (
 )
 
 type FileInfoData struct {
-	ID           string `json:"id"`
-	Name         string `json:"name"`
-	Size         string `json:"size"`
-	Path         string `json:"path"`
-	LastModified string `json:"last_modified"`
-	ChecksumSHA  string `json:"checksum_sha256"`
+	ID             string `json:"id"`
+	Name           string `json:"name"`
+	Size           string `json:"size"`
+	Path           string `json:"path"`
+	LastModified   string `json:"last_modified"`
+	ChecksumSHA256 string `json:"checksum_sha256"`
 }
 
 func GetAllVideosInDirectory(dirPath string) []FileInfoData {
@@ -36,12 +36,12 @@ func GetAllVideosInDirectory(dirPath string) []FileInfoData {
 		checksum := CalculateSHA256Checksum(path)
 
 		videoInfo := FileInfoData{
-			ID:           checksum, // temporarily use checksum as ID - this won't scale well.
-			Name:         info.Name(),
-			Size:         HumanReadableFileSize(info.Size()),
-			Path:         path,
-			LastModified: info.ModTime().Format(time.RFC3339),
-			ChecksumSHA:  checksum,
+			ID:             checksum, // temporarily use checksum as ID - this won't scale well.
+			Name:           info.Name(),
+			Size:           HumanReadableFileSize(info.Size()),
+			Path:           "/" + info.Name(), // Path: path - this will expose the full path to the file
+			LastModified:   info.ModTime().Format(time.RFC3339),
+			ChecksumSHA256: checksum,
 		}
 
 		videosArray = append(videosArray, videoInfo)

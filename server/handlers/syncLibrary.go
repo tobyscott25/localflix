@@ -9,11 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type LibraryData struct {
-	Version string                `json:"version"`
-	Videos  []helper.FileInfoData `json:"videos"` // Currently only videos are supported
-}
-
 func SyncLibraryHandler(c *gin.Context) {
 
 	version := os.Getenv("localflixSemanticVersion")
@@ -21,7 +16,7 @@ func SyncLibraryHandler(c *gin.Context) {
 
 	videosList := helper.GetAllVideosInDirectory(libraryLocation)
 
-	data := LibraryData{
+	data := helper.LibraryData{
 		Version: version,
 		Videos:  videosList,
 	}

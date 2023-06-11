@@ -11,11 +11,11 @@ import (
 )
 
 func GetVideoDetailsHandler(c *gin.Context) {
-	checksum := c.Param("checksum")
+	id := c.Param("id")
 
-	fmt.Println("Checksum:", checksum)
+	fmt.Println("ID:", id)
 
-	filePath, err := helper.LookupFileByChecksum(checksum)
+	filePath, err := helper.LookupFileByChecksum(id)
 	if err != nil {
 		if os.IsNotExist(err) {
 			c.JSON(http.StatusNotFound, gin.H{
@@ -45,11 +45,11 @@ func GetVideoDetailsHandler(c *gin.Context) {
 	}
 
 	fileData := helper.FileInfoData{
-		Name:         fileInfo.Name(),
-		Size:         helper.HumanReadableFileSize(fileInfo.Size()),
-		Path:         "/" + fileInfo.Name(),
-		LastModified: fileInfo.ModTime().Format(time.RFC3339),
-		ChecksumSHA:  helper.CalculateSHA256Checksum(filePath),
+		Name:           fileInfo.Name(),
+		Size:           helper.HumanReadableFileSize(fileInfo.Size()),
+		Path:           "/" + fileInfo.Name(),
+		LastModified:   fileInfo.ModTime().Format(time.RFC3339),
+		ChecksumSHA256: helper.CalculateSHA256Checksum(filePath),
 	}
 
 	c.JSON(http.StatusOK, fileData)
