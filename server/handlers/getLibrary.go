@@ -13,20 +13,22 @@ import (
 func GetLibraryHandler(c *gin.Context) {
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
 
-	// add error handling for file not found
-	file, err := os.Open(libraryLocation + "/localflix-library.yaml")
+	libraryFile, err := os.Open(libraryLocation + "/localflix-library.yaml")
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Library file not found",
+		})
+		return
 	}
-	defer file.Close()
+	defer libraryFile.Close()
 
-	data, err := io.ReadAll(file)
+	libraryYamlData, err := io.ReadAll(libraryFile)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
 
 	var library LibraryData
-	err = yaml.Unmarshal(data, &library)
+	err = yaml.Unmarshal(libraryYamlData, &library)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
