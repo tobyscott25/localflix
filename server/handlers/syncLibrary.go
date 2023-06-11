@@ -10,8 +10,8 @@ import (
 )
 
 type LibraryData struct {
-	Version string
-	Videos  []helper.FileInfoData // Currently only videos are supported
+	Version string                `json:"version"`
+	Videos  []helper.FileInfoData `json:"videos"` // Currently only videos are supported
 }
 
 func SyncLibraryHandler(c *gin.Context) {
