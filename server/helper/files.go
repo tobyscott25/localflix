@@ -13,8 +13,8 @@ type FileInfoData struct {
 	Name         string `json:"name"`
 	Size         string `json:"size"`
 	Path         string `json:"path"`
-	LastModified string `json:"lastModified"`
-	ChecksumSHA  string `json:"checksum"`
+	LastModified string `json:"last_modified"`
+	ChecksumSHA  string `json:"checksum_sha256"`
 }
 
 func GetAllVideosInDirectory(dirPath string) []FileInfoData {
