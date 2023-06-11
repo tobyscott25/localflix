@@ -10,8 +10,8 @@ import (
 
 func GetVideoListHandler(c *gin.Context) {
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
-	files := helper.GetFiles(libraryLocation)
+	videosList := helper.GetAllVideos(libraryLocation)
 	c.JSON(http.StatusOK, gin.H{
-		"files": files,
+		"files": videosList,
 	})
 }

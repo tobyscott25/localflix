@@ -11,6 +11,9 @@ import (
 )
 
 func main() {
+
+	os.Setenv("localflixSemanticVersion", "0.1.0")
+
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
 	serveApplication(libraryLocation)
 }
@@ -23,6 +26,7 @@ func serveApplication(libraryLocation string) {
 	router.Use(middleware.AllowAllCORS())
 
 	router.GET("/", handlers.HealthCheckHandler)
+	router.GET("/sync", handlers.SyncLibraryHandler)
 	router.GET("/files", handlers.GetVideoListHandler)
 	router.GET("/files/checksum/:checksum", handlers.GetVideoDetailsHandler)
 	router.Static("/assets", libraryLocation)

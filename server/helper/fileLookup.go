@@ -16,10 +16,10 @@ type FileInfoData struct {
 	ChecksumSHA string `json:"checksum"`
 }
 
-func GetFiles(dirPath string) []FileInfoData {
+func GetAllVideos(libraryLocation string) []FileInfoData {
 	var files []FileInfoData
 
-	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(libraryLocation, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -45,7 +45,7 @@ func GetFiles(dirPath string) []FileInfoData {
 	})
 
 	if err != nil {
-		fmt.Printf("Error walking the path %s: %v\n", dirPath, err)
+		fmt.Printf("Error walking the path %s: %v\n", libraryLocation, err)
 	}
 
 	return files
