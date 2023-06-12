@@ -40,3 +40,12 @@ func GetLibraryFromYamlFile() (*LibraryData, error) {
 
 	return &library, nil
 }
+
+func GetVideoDetailsByID(library LibraryData, id string) *FileInfoData {
+	for _, fileInfo := range library.Videos {
+		if fileInfo.ID == id {
+			return &fileInfo
+		}
+	}
+	return nil
+}

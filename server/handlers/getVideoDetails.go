@@ -4,56 +4,33 @@ import (
 	"fmt"
 	"localflix/server/helper"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func GetVideoDetailsHandler(c *gin.Context) {
+
 	id := c.Param("id")
 
+	library, err := helper.GetLibraryFromYamlFile()
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Library file not found",
+		})
+		return
+	}
+
 	fmt.Println("ID:", id)
+	videoDetails := helper.GetVideoDetailsByID(*library, id)
 
-	filePath, err := helper.LookupFileByChecksum(id)
-	if err != nil {
-		if os.IsNotExist(err) {
-			c.JSON(http.StatusNotFound, gin.H{
-				"error": "File not found",
-			})
-		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": "Internal server error",
-			})
-		}
-		return
-	}
+	fmt.Println("Video Details:", videoDetails)
 
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Internal server error",
+	if videoDetails == nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Video not found",
 		})
 		return
 	}
 
-	if fileInfo.IsDir() {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid file",
-		})
-		return
-	}
-
-	checksum := helper.CalculateSHA256Checksum(filePath)
-
-	fileData := helper.FileInfoData{
-		ID:             checksum,
-		Name:           fileInfo.Name(),
-		Size:           helper.HumanReadableFileSize(fileInfo.Size()),
-		Path:           "/assets/" + fileInfo.Name(),
-		LastModified:   fileInfo.ModTime().Format(time.RFC3339),
-		ChecksumSHA256: checksum,
-	}
-
-	c.JSON(http.StatusOK, fileData)
+	c.JSON(http.StatusOK, videoDetails)
 }
