@@ -5,12 +5,13 @@ import (
 	"localflix/server/validation"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
 type FileInfoData struct {
 	ID             string `json:"id"`
-	Name           string `json:"name"`
+	Title          string `json:"title"`
 	Size           string `json:"size"`
 	Path           string `json:"path"`
 	LastModified   string `json:"last_modified"`
@@ -36,8 +37,8 @@ func GetAllVideosInDirectory(dirPath string) []FileInfoData {
 		checksum := CalculateSHA256Checksum(path)
 
 		videoInfo := FileInfoData{
-			ID:             checksum, // temporarily use checksum as ID - this won't scale well.
-			Name:           info.Name(),
+			ID:             checksum,                             // temporarily use checksum as ID - this won't scale well.
+			Title:          RemoveFilenameExtension(info.Name()), // use the filename (without extension) as the default title
 			Size:           HumanReadableFileSize(info.Size()),
 			Path:           "/assets/" + info.Name(),
 			LastModified:   info.ModTime().Format(time.RFC3339),
@@ -53,4 +54,12 @@ func GetAllVideosInDirectory(dirPath string) []FileInfoData {
 	}
 
 	return videosArray
+}
+
+func RemoveFilenameExtension(filename string) string {
+	lastDotIndex := strings.LastIndex(filename, ".")
+	if lastDotIndex == -1 {
+		return filename
+	}
+	return filename[:lastDotIndex]
 }
