@@ -44,12 +44,15 @@ func GetVideoDetailsHandler(c *gin.Context) {
 		return
 	}
 
+	checksum := helper.CalculateSHA256Checksum(filePath)
+
 	fileData := helper.FileInfoData{
+		ID:             checksum,
 		Name:           fileInfo.Name(),
 		Size:           helper.HumanReadableFileSize(fileInfo.Size()),
-		Path:           "/" + fileInfo.Name(),
+		Path:           "/assets/" + fileInfo.Name(),
 		LastModified:   fileInfo.ModTime().Format(time.RFC3339),
-		ChecksumSHA256: helper.CalculateSHA256Checksum(filePath),
+		ChecksumSHA256: checksum,
 	}
 
 	c.JSON(http.StatusOK, fileData)

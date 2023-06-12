@@ -39,7 +39,7 @@ func GetAllVideosInDirectory(dirPath string) []FileInfoData {
 			ID:             checksum, // temporarily use checksum as ID - this won't scale well.
 			Name:           info.Name(),
 			Size:           HumanReadableFileSize(info.Size()),
-			Path:           "/" + info.Name(), // Path: path - this will expose the full path to the file
+			Path:           "/assets/" + info.Name(),
 			LastModified:   info.ModTime().Format(time.RFC3339),
 			ChecksumSHA256: checksum,
 		}
