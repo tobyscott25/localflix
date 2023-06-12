@@ -16,14 +16,17 @@ func SyncLibraryHandler(c *gin.Context) {
 
 	videosList := helper.GetAllVideosInDirectory(libraryLocation)
 
-	data := helper.LibraryData{
+	newLibrary := helper.LibraryData{
 		Version: version,
 		Videos:  videosList,
 	}
 
-	err := helper.WriteYAMLFile(libraryLocation+"/localflix-library.yaml", data)
+	err := helper.SyncLibraryFile(newLibrary)
 	if err != nil {
-		fmt.Printf("Failed to write YAML file: %v", err)
+		fmt.Println("Failed to sync library file:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to sync library file",
+		})
 		return
 	}
 

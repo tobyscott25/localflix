@@ -1,8 +1,8 @@
 package helper
 
 import (
+	"fmt"
 	"io"
-	"log"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -13,32 +13,44 @@ type LibraryData struct {
 	Videos  []FileInfoData `json:"videos"` // Currently only videos are supported
 }
 
-func GetLibraryFromYamlFile() (*LibraryData, error) {
-	libraryLocation := os.Getenv("LIBRARY_LOCATION")
+func LoadLibraryFromYamlFile() (*LibraryData, error) {
 
-	libraryFile, err := os.Open(libraryLocation + "/localflix-library.yaml")
+	libraryFileLocation := os.Getenv("LIBRARY_LOCATION") + "/localflix-library.yaml"
+
+	libraryFile, err := os.Open(libraryFileLocation)
 	if err != nil {
-		// c.JSON(http.StatusNotFound, gin.H{
-		// 	"error": "Library file not found",
-		// })
+		fmt.Printf("Failed to open library file: %v", err)
 		return nil, err
 	}
 	defer libraryFile.Close()
 
 	libraryYamlData, err := io.ReadAll(libraryFile)
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		fmt.Printf("Failed to read library file: %v", err)
 		return nil, err
 	}
 
 	var library LibraryData
 	err = yaml.Unmarshal(libraryYamlData, &library)
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		fmt.Printf("Failed to unmarshal library file: %v", err)
 		return nil, err
 	}
 
 	return &library, nil
+}
+
+func SyncLibraryFile(library LibraryData) error {
+
+	libraryFileLocation := os.Getenv("LIBRARY_LOCATION") + "/localflix-library.yaml"
+
+	err := WriteYAMLFile(libraryFileLocation, library)
+	if err != nil {
+		fmt.Printf("Failed to write YAML file: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 func GetVideoDetailsByID(library LibraryData, id string) *FileInfoData {
@@ -47,5 +59,6 @@ func GetVideoDetailsByID(library LibraryData, id string) *FileInfoData {
 			return &fileInfo
 		}
 	}
-	return nil
+
+	return nil // Return nil if no videos match the ID
 }

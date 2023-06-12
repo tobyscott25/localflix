@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"localflix/server/helper"
 	"net/http"
 
@@ -12,18 +11,15 @@ func GetVideoDetailsHandler(c *gin.Context) {
 
 	id := c.Param("id")
 
-	library, err := helper.GetLibraryFromYamlFile()
+	library, err := helper.LoadLibraryFromYamlFile()
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Library file not found",
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Missing Library file",
 		})
 		return
 	}
 
-	fmt.Println("ID:", id)
 	videoDetails := helper.GetVideoDetailsByID(*library, id)
-
-	fmt.Println("Video Details:", videoDetails)
 
 	if videoDetails == nil {
 		c.JSON(http.StatusNotFound, gin.H{
