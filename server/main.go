@@ -29,6 +29,7 @@ func serveApplication(libraryLocation string) {
 	router.GET("/library", handlers.GetLibraryHandler)
 	router.PUT("/library", handlers.SyncLibraryHandler)
 	router.GET("/library/videos/:id", handlers.GetVideoDetailsHandler)
+	router.PUT("/library/videos/:id", handlers.UpdateVideoDetailsHandler)
 	router.Static("/assets", libraryLocation)
 
 	err := router.Run(":8080")

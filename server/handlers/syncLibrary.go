@@ -21,7 +21,7 @@ func SyncLibraryHandler(c *gin.Context) {
 		Videos:  videosList,
 	}
 
-	err := helper.SyncLibraryFile(newLibrary)
+	err := helper.WriteLibraryToYamlFile(newLibrary)
 	if err != nil {
 		fmt.Println("Failed to sync library file:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{

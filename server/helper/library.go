@@ -40,7 +40,7 @@ func LoadLibraryFromYamlFile() (*LibraryData, error) {
 	return &library, nil
 }
 
-func SyncLibraryFile(library LibraryData) error {
+func WriteLibraryToYamlFile(library LibraryData) error {
 
 	libraryFileLocation := os.Getenv("LIBRARY_LOCATION") + "/localflix-library.yaml"
 
@@ -61,4 +61,34 @@ func GetVideoDetailsByID(library LibraryData, id string) *FileInfoData {
 	}
 
 	return nil // Return nil if no videos match the ID
+}
+
+func UpdateVideoDetailsByID(library *LibraryData, id string, updatedFileInfo FileInfoData) error {
+	for i, fileInfo := range library.Videos {
+		if fileInfo.ID == id {
+
+			// Update the specified fields of the FileInfoData object
+			if updatedFileInfo.Title != "" {
+				library.Videos[i].Title = updatedFileInfo.Title
+			}
+			if updatedFileInfo.Description != "" {
+				library.Videos[i].Description = updatedFileInfo.Description
+			}
+			if updatedFileInfo.Size != "" {
+				return fmt.Errorf("size cannot be updated")
+			}
+			if updatedFileInfo.Path != "" {
+				return fmt.Errorf("path cannot be updated")
+			}
+			if updatedFileInfo.LastModified != "" {
+				return fmt.Errorf("LastModified cannot be updated manually")
+			}
+			if updatedFileInfo.ChecksumSHA256 != "" {
+				return fmt.Errorf("ChecksumSHA256 cannot be updated manually")
+			}
+
+			return nil
+		}
+	}
+	return nil
 }

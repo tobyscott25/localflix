@@ -12,6 +12,7 @@ import (
 type FileInfoData struct {
 	ID             string `json:"id"`
 	Title          string `json:"title"`
+	Description    string `json:"description"`
 	Size           string `json:"size"`
 	Path           string `json:"path"`
 	LastModified   string `json:"last_modified"`
