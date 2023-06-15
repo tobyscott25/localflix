@@ -20,7 +20,7 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 		async function fetchVideoDetails() {
 			try {
 				const response = await getVideoDetails(
-					params.checksum?.toString() as string
+					params.id?.toString() as string
 				)
 				const data =
 					(await response.json()) as VideoDetailsEndpointReturnShape
