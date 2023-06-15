@@ -13,8 +13,8 @@ type FileInfoData struct {
 	ID             string `json:"id"`
 	Title          string `json:"title"`
 	Description    string `json:"description"`
-	Size           string `json:"size"`
-	Path           string `json:"path"`
+	FileSize       string `json:"file_size"`
+	FileName       string `json:"file_name"`
 	LastModified   string `json:"last_modified"`
 	ChecksumSHA256 string `json:"checksum_sha256"`
 }
@@ -40,8 +40,8 @@ func GetAllVideosInDirectory(dirPath string) []FileInfoData {
 		videoInfo := FileInfoData{
 			ID:             checksum,                             // temporarily use checksum as ID - this won't scale well.
 			Title:          RemoveFilenameExtension(info.Name()), // use the filename (without extension) as the default title
-			Size:           HumanReadableFileSize(info.Size()),
-			Path:           "/assets/" + info.Name(),
+			FileName:       info.Name(),
+			FileSize:       HumanReadableFileSize(info.Size()),
 			LastModified:   info.ModTime().Format(time.RFC3339),
 			ChecksumSHA256: checksum,
 		}

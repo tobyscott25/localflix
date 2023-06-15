@@ -74,10 +74,10 @@ func UpdateVideoDetailsByID(library *LibraryData, id string, updatedFileInfo Fil
 			if updatedFileInfo.Description != "" {
 				library.Videos[i].Description = updatedFileInfo.Description
 			}
-			if updatedFileInfo.Size != "" {
+			if updatedFileInfo.FileSize != "" {
 				return fmt.Errorf("size cannot be updated")
 			}
-			if updatedFileInfo.Path != "" {
+			if updatedFileInfo.FileName != "" {
 				return fmt.Errorf("path cannot be updated")
 			}
 			if updatedFileInfo.LastModified != "" {
