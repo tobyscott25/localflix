@@ -22,6 +22,12 @@ export function getLibrary(): Promise<Response> {
 	return fetch(`${baseUrl}/library`)
 }
 
+export function syncLibrary(): Promise<Response> {
+	return fetch(`${baseUrl}/library/sync`, {
+		method: 'POST',
+	})
+}
+
 export function getVideoDetails(id: string): Promise<Response> {
 	return fetch(`${baseUrl}/library/videos/${id}`)
 }
