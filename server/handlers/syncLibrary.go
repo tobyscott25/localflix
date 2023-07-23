@@ -15,7 +15,18 @@ func SyncLibraryHandler(c *gin.Context) {
 	version := os.Getenv("localflixSemanticVersion")
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
 
-	videosList := helper.GetAllVideosInDirectory(libraryLocation)
+	// ===
+
+	// Delete all entries in the 'videos' table
+	// result := database.Database.Delete(&model.Video{})
+	result := database.Database.Exec("DELETE FROM videos")
+	if result.Error != nil {
+		// Handle error, if any
+		fmt.Println("Error deleting entries:", result.Error)
+	} else {
+		// Print the number of rows deleted
+		fmt.Println("Deleted rows:", result.RowsAffected)
+	}
 
 	dbVideosList := helper.GetAllDbVideosInDirectory(libraryLocation)
 
@@ -24,6 +35,10 @@ func SyncLibraryHandler(c *gin.Context) {
 		result := database.Database.Create(&video)
 		fmt.Println(result.Error)
 	}
+
+	// ===
+
+	videosList := helper.GetAllVideosInDirectory(libraryLocation)
 
 	newLibrary := helper.LibraryData{
 		Version: version,
