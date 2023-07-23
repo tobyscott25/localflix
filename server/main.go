@@ -13,8 +13,6 @@ import (
 
 func main() {
 
-	os.Setenv("localflixSemanticVersion", "0.1.0")
-
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
 	serveApplication(libraryLocation)
 }

@@ -1,0 +1,16 @@
+version: '3.9'
+name: localflix
+services:
+  api:
+    container_name: localflix-api
+    ports:
+      - 8080:8080
+    environment:
+      LIBRARY_LOCATION: ~/localflix
+      LF_VERSION: 0.1.0
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+      target: dev
+    volumes:
+      - .:/app

@@ -14,7 +14,7 @@ type LibraryData struct {
 
 func LoadLibrary() (*LibraryData, error) {
 
-	version := os.Getenv("localflixSemanticVersion")
+	version := os.Getenv("LF_VERSION")
 	videos := GetAllVideosInDB()
 
 	return &LibraryData{

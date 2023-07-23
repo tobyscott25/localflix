@@ -8,15 +8,21 @@ Install dependancies
 go mod download
 ```
 
-Set your library location
+Set your library location as an environment variable
 
 ```bash
+vim docker-compose.yaml
+
+# or if you're not using Docker
 export LIBRARY_LOCATION=/path/to/your/library
 ```
 
 Run the server
 
 ```bash
+docker compose up
+
+# or if you're not using Docker
 go run main.go
 ```
 
