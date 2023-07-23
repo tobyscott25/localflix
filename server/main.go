@@ -30,7 +30,8 @@ func serveApplication(libraryLocation string) {
 	router.Use(middleware.AllowAllCORS())
 
 	router.GET("/", handlers.HealthCheckHandler)
-	router.GET("/library", handlers.GetLibraryHandler)
+	// router.GET("/library", handlers.GetLibraryHandler)
+	router.GET("/library", handlers.GetLibraryHandlerv2)
 	// router.POST("/library/sync", handlers.SyncLibraryHandler)
 	router.POST("/library/sync", handlers.SyncLibraryHandlerv2)
 	router.GET("/library/videos/:id", handlers.GetVideoDetailsHandler)
