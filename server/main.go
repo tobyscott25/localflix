@@ -31,7 +31,8 @@ func serveApplication(libraryLocation string) {
 
 	router.GET("/", handlers.HealthCheckHandler)
 	router.GET("/library", handlers.GetLibraryHandler)
-	router.POST("/library/sync", handlers.SyncLibraryHandler)
+	// router.POST("/library/sync", handlers.SyncLibraryHandler)
+	router.POST("/library/sync", handlers.SyncLibraryHandlerv2)
 	router.GET("/library/videos/:id", handlers.GetVideoDetailsHandler)
 	router.PUT("/library/videos/:id", handlers.UpdateVideoDetailsHandler)
 	router.Static("/assets", libraryLocation)
