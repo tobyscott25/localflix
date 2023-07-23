@@ -30,13 +30,10 @@ func serveApplication(libraryLocation string) {
 	router.Use(middleware.AllowAllCORS())
 
 	router.GET("/", handlers.HealthCheckHandler)
-	// router.GET("/library", handlers.GetLibraryHandler)
-	router.GET("/library", handlers.GetLibraryHandlerv2)
-	// router.POST("/library/sync", handlers.SyncLibraryHandler)
-	router.POST("/library/sync", handlers.SyncLibraryHandlerv2)
-	// router.GET("/library/videos/:id", handlers.GetVideoDetailsHandler)
-	router.GET("/library/videos/:id", handlers.GetVideoDetailsHandlerV2)
-	router.PUT("/library/videos/:id", handlers.UpdateVideoDetailsHandler)
+	router.GET("/library", handlers.GetLibraryHandler)
+	router.POST("/library/sync", handlers.SyncLibraryHandler)
+	router.GET("/library/videos/:id", handlers.GetVideoDetailsHandler)
+	// router.PUT("/library/videos/:id", handlers.UpdateVideoDetailsHandler)
 	router.Static("/assets", libraryLocation)
 
 	err := router.Run(":8080")

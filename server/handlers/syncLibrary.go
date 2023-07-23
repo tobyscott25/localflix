@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"localflix/server/database"
 	"localflix/server/helper"
 	"net/http"
 	"os"
@@ -11,23 +12,23 @@ import (
 
 func SyncLibraryHandler(c *gin.Context) {
 
-	version := os.Getenv("localflixSemanticVersion")
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
+
+	// Delete all entries in the 'videos' table
+	// queryResult := database.Database.Delete(&model.Video{}) // This isn't allowed by GORM
+	queryResult := database.Database.Exec("DELETE FROM videos")
+	if queryResult.Error != nil {
+		fmt.Println("Error deleting entries:", queryResult.Error)
+	} else {
+		fmt.Println("Deleted rows:", queryResult.RowsAffected)
+	}
 
 	videosList := helper.GetAllVideosInDirectory(libraryLocation)
 
-	newLibrary := helper.LibraryData{
-		Version: version,
-		Videos:  videosList,
-	}
-
-	err := helper.WriteLibraryToYamlFile(newLibrary)
-	if err != nil {
-		fmt.Println("Failed to sync library file:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to sync library file",
-		})
-		return
+	for _, video := range videosList {
+		fmt.Println("Syncing video to DB:", video.Title)
+		result := database.Database.Create(&video)
+		fmt.Println(result.Error)
 	}
 
 	c.JSON(http.StatusNoContent, nil)

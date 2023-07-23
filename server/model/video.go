@@ -20,6 +20,5 @@ type Video struct {
 // See: https://gorm.io/docs/create.html#Create-Hooks
 func (video *Video) BeforeCreate(*gorm.DB) error {
 	video.ID = uuid.NewV4()
-
 	return nil
 }

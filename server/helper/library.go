@@ -2,93 +2,44 @@ package helper
 
 import (
 	"fmt"
-	"io"
+	"localflix/server/database"
+	"localflix/server/model"
 	"os"
-
-	"gopkg.in/yaml.v3"
 )
 
 type LibraryData struct {
-	Version string         `json:"version"`
-	Videos  []FileInfoData `json:"videos"` // Currently only videos are supported
+	Version string        `json:"version"`
+	Videos  []model.Video `json:"videos"` // Currently only videos are supported
 }
 
-func LoadLibraryFromYamlFile() (*LibraryData, error) {
+func LoadLibrary() (*LibraryData, error) {
 
-	libraryFileLocation := os.Getenv("LIBRARY_LOCATION") + "/localflix-library.yaml"
+	version := os.Getenv("localflixSemanticVersion")
+	videos := GetAllVideosInDB()
 
-	libraryFile, err := os.Open(libraryFileLocation)
-	if err != nil {
-		fmt.Printf("Failed to open library file: %v", err)
-		return nil, err
-	}
-	defer libraryFile.Close()
-
-	libraryYamlData, err := io.ReadAll(libraryFile)
-	if err != nil {
-		fmt.Printf("Failed to read library file: %v", err)
-		return nil, err
-	}
-
-	var library LibraryData
-	err = yaml.Unmarshal(libraryYamlData, &library)
-	if err != nil {
-		fmt.Printf("Failed to unmarshal library file: %v", err)
-		return nil, err
-	}
-
-	return &library, nil
+	return &LibraryData{
+		Version: version,
+		Videos:  videos,
+	}, nil
 }
 
-func WriteLibraryToYamlFile(library LibraryData) error {
+func GetAllVideosInDB() []model.Video {
+	var videos []model.Video
+	database.Database.Find(&videos)
+	return videos
+}
 
-	libraryFileLocation := os.Getenv("LIBRARY_LOCATION") + "/localflix-library.yaml"
+func GetVideoDetailsByID(id string) *model.Video {
 
-	err := WriteYAMLFile(libraryFileLocation, library)
+	var video model.Video
+	err := database.Database.Where("id = ?", id).First(&video).Error
+
 	if err != nil {
-		fmt.Printf("Failed to write YAML file: %v", err)
-		return err
+		fmt.Println("Error getting video details:", err)
+		return nil // Return nil if no videos match the ID
 	}
 
-	return nil
-}
+	fmt.Println("Video details (TITLE):", video.Title)
 
-func GetVideoDetailsByID(library LibraryData, id string) *FileInfoData {
-	for _, fileInfo := range library.Videos {
-		if fileInfo.ID == id {
-			return &fileInfo
-		}
-	}
-
-	return nil // Return nil if no videos match the ID
-}
-
-func UpdateVideoDetailsByID(library *LibraryData, id string, updatedFileInfo FileInfoData) error {
-	for i, fileInfo := range library.Videos {
-		if fileInfo.ID == id {
-
-			// Update the specified fields of the FileInfoData object
-			if updatedFileInfo.Title != "" {
-				library.Videos[i].Title = updatedFileInfo.Title
-			}
-			if updatedFileInfo.Description != "" {
-				library.Videos[i].Description = updatedFileInfo.Description
-			}
-			if updatedFileInfo.FileSize != "" {
-				return fmt.Errorf("size cannot be updated")
-			}
-			if updatedFileInfo.FileName != "" {
-				return fmt.Errorf("path cannot be updated")
-			}
-			if updatedFileInfo.LastModified != "" {
-				return fmt.Errorf("LastModified cannot be updated manually")
-			}
-			if updatedFileInfo.ChecksumSHA256 != "" {
-				return fmt.Errorf("ChecksumSHA256 cannot be updated manually")
-			}
-
-			return nil
-		}
-	}
-	return nil
+	return &video
 }

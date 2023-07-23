@@ -17,6 +17,8 @@ func HealthCheckHandler(c *gin.Context) {
 		return
 	}
 
+	// Add check for SQLite database file
+
 	c.JSON(http.StatusOK, gin.H{
 		"healthy":         true,
 		"libraryLocation": os.Getenv("LIBRARY_LOCATION"),
