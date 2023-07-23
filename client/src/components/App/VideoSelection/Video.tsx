@@ -1,15 +1,15 @@
 import { FunctionComponent, ReactElement } from 'react'
 import { Box, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
-import { File } from '../../../utils/api/files'
+import { File } from '../../../utils/api/library'
 import { formatDate } from '../../../utils/formatDate'
 
 interface VideoProps {
-	file: File
+	video: File
 }
 
 export const Video: FunctionComponent<VideoProps> = ({
-	file,
+	video,
 }): ReactElement => {
 	const navigate = useNavigate()
 
@@ -18,7 +18,7 @@ export const Video: FunctionComponent<VideoProps> = ({
 			width={'300px'}
 			onClick={() => {
 				console.log('clicked')
-				navigate(`/video/${encodeURIComponent(file.checksum)}`)
+				navigate(`/video/${encodeURIComponent(video.id)}`)
 			}}
 			borderRadius={'md'}
 			// shadow={'md'}
@@ -35,10 +35,10 @@ export const Video: FunctionComponent<VideoProps> = ({
 				borderRadius={'md'}
 				mb={2}
 			></Box>
-			<Text fontWeight={'bold'}>{file.name}</Text>
-			<Text fontSize={'sm'}>Size: {file.size}</Text>
+			<Text fontWeight={'bold'}>{video.title}</Text>
+			<Text fontSize={'sm'}>Size: {video.file_size}</Text>
 			<Text fontSize={'sm'}>
-				Last modified: {formatDate(file.lastModified, 'short')}
+				Last modified: {formatDate(video.last_modified, 'short')}
 			</Text>
 		</Box>
 	)

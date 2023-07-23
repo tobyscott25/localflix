@@ -7,7 +7,7 @@ import {
 	File,
 	VideoDetailsEndpointReturnShape,
 	getVideoDetails,
-} from '../../../utils/api/files'
+} from '../../../utils/api/library'
 import { formatDate } from '../../../utils/formatDate'
 
 export const VideoViewer: FunctionComponent = (): ReactElement => {
@@ -20,7 +20,7 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 		async function fetchVideoDetails() {
 			try {
 				const response = await getVideoDetails(
-					params.checksum?.toString() as string
+					params.id?.toString() as string
 				)
 				const data =
 					(await response.json()) as VideoDetailsEndpointReturnShape
@@ -39,7 +39,7 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 				as="video"
 				controls
 				autoPlay
-				src={`${baseUrl}/assets${videoDetails?.path}`}
+				src={`${baseUrl}/assets/${videoDetails?.file_name}`}
 				// poster="thumbnail_image_url_goes_here"
 				// objectFit="contain"
 				// sx={{
@@ -49,19 +49,19 @@ export const VideoViewer: FunctionComponent = (): ReactElement => {
 			/>
 			<Box my={6}>
 				<Text fontSize={'xl'} fontWeight={'bold'}>
-					{videoDetails?.name}
+					{videoDetails?.title}
 				</Text>
 				<Box mt={2}>
 					<Text>
 						Last Modified:{' '}
 						{formatDate(
-							videoDetails?.lastModified as string,
+							videoDetails?.last_modified as string,
 							'long'
 						)}
 					</Text>
-					<Text>Size: {videoDetails?.size}</Text>
+					<Text>Size: {videoDetails?.file_size}</Text>
 					<Text>
-						Checksum: <Code>{videoDetails?.checksum}</Code>
+						Checksum: <Code>{videoDetails?.checksum_sha256}</Code>
 					</Text>
 				</Box>
 			</Box>

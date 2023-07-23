@@ -22,7 +22,7 @@ const router: Router = createBrowserRouter([
 				element: <Browse />,
 			},
 			{
-				path: 'video/:checksum',
+				path: 'video/:id',
 				element: <VideoViewer />,
 			},
 			{
