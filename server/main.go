@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"localflix/server/database"
 	"localflix/server/handlers"
 	"localflix/server/middleware"
 
@@ -20,7 +21,10 @@ func main() {
 
 func serveApplication(libraryLocation string) {
 
-	fmt.Println("Library Path:", libraryLocation)
+	fmt.Println("📚 Library Path:", libraryLocation)
+
+	database.Connect(libraryLocation)
+	database.RunMigrations()
 
 	router := gin.Default()
 	router.Use(middleware.AllowAllCORS())
