@@ -9,8 +9,8 @@ type Video struct {
 	ID             uuid.UUID `gorm:"type:uuid;primary_key;" json:"id"`
 	Title          string    `gorm:"type:text;not null" json:"title"`
 	Description    string    `gorm:"type:text;not null" json:"description"`
-	FileName       string    `gorm:"type:text;not null" json:"file_size"`
-	FileSize       string    `gorm:"type:text;not null" json:"file_name"`
+	FileName       string    `gorm:"type:text;not null" json:"file_name"`
+	FileSize       string    `gorm:"type:text;not null" json:"file_size"`
 	LastModified   string    `gorm:"type:text;not null" json:"last_modified"`
 	ChecksumSHA256 string    `gorm:"type:text;not null" json:"checksum_sha256"`
 	// CreatedAt      time.Time `gorm:"not null" json:"created_at"`

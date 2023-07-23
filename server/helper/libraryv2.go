@@ -30,15 +30,17 @@ func GetAllVideosInDB() []model.Video {
 	return videos
 }
 
-func GetVideoDetailsByIDv2(library LibraryDataV2, id string) *model.Video {
+func GetVideoDetailsByIDv2(id string) *model.Video {
 
 	var video model.Video
-	result := database.Database.First(&video, id)
+	err := database.Database.Where("id = ?", id).First(&video).Error
 
-	if result.Error != nil {
-		fmt.Println("Error getting video details:", result.Error)
+	if err != nil {
+		fmt.Println("Error getting video details:", err)
 		return nil // Return nil if no videos match the ID
 	}
+
+	fmt.Println("Video details (TITLE):", video.Title)
 
 	return &video
 }
