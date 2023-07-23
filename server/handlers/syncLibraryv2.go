@@ -15,19 +15,17 @@ func SyncLibraryHandlerv2(c *gin.Context) {
 	libraryLocation := os.Getenv("LIBRARY_LOCATION")
 
 	// Delete all entries in the 'videos' table
-	// result := database.Database.Delete(&model.Video{})
-	result := database.Database.Exec("DELETE FROM videos")
-	if result.Error != nil {
-		// Handle error, if any
-		fmt.Println("Error deleting entries:", result.Error)
+	// queryResult := database.Database.Delete(&model.Video{}) // This isn't allowed by GORM
+	queryResult := database.Database.Exec("DELETE FROM videos")
+	if queryResult.Error != nil {
+		fmt.Println("Error deleting entries:", queryResult.Error)
 	} else {
-		// Print the number of rows deleted
-		fmt.Println("Deleted rows:", result.RowsAffected)
+		fmt.Println("Deleted rows:", queryResult.RowsAffected)
 	}
 
-	dbVideosList := helper.GetAllDbVideosInDirectory(libraryLocation)
+	videosList := helper.GetAllDbVideosInDirectory(libraryLocation)
 
-	for _, video := range dbVideosList {
+	for _, video := range videosList {
 		fmt.Println("Syncing video to DB:", video.Title)
 		result := database.Database.Create(&video)
 		fmt.Println(result.Error)
