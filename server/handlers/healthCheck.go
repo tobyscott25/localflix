@@ -9,10 +9,11 @@ import (
 
 func HealthCheckHandler(c *gin.Context) {
 
-	if os.Getenv("LIBRARY_LOCATION") == "" {
+	if os.Getenv("LF_LIBRARY_LOCATION") == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"healthy": false,
-			"message": "LIBRARY_LOCATION is not set",
+			"healthy":    false,
+			"testingair": "it works!",
+			"message":    "LF_LIBRARY_LOCATION is not set",
 		})
 		return
 	}
@@ -21,6 +22,6 @@ func HealthCheckHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"healthy":         true,
-		"libraryLocation": os.Getenv("LIBRARY_LOCATION"),
+		"libraryLocation": os.Getenv("LF_LIBRARY_LOCATION"),
 	})
 }

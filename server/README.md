@@ -1,29 +1,16 @@
-## Static file server
+## Localflix Server
 
-This serves static files from the `assets` directory over HTTP for the client to consume.
+This server provides REST endpoints for the Localflix client to consume that serves your local media library.
 
-Install dependancies
-
-```bash
-go mod download
-```
-
-Set your library location as an environment variable
+## Usage
 
 ```bash
+# With Docker (edit the docker-compose.yaml file to set your library location)
 vim docker-compose.yaml
-
-# or if you're not using Docker
-export LIBRARY_LOCATION=/path/to/your/library
-```
-
-Run the server
-
-```bash
 docker compose up
 
-# or if you're not using Docker
+# Without Docker
+export LF_LIBRARY_LOCATION=/path/to/your/library
+go mod download
 go run main.go
 ```
-
-Visit `localhost:8080/assets/video.mp4` to see the static file server in action.

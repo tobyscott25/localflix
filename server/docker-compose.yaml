@@ -1,16 +1,16 @@
 version: '3.9'
 name: localflix
 services:
-  api:
-    container_name: localflix-api
+  server:
+    container_name: server
     ports:
       - 8080:8080
     environment:
-      LIBRARY_LOCATION: ~/localflix
+      LF_LIBRARY_LOCATION: /library
       LF_VERSION: 0.1.0
     build:
       dockerfile: Dockerfile.dev
-      context: .
-      target: dev
+      context: ./
     volumes:
-      - .:/app
+      - ./:/app
+      - ~/localflix:/library # Map the ~/localflix directory on the host to /library inside the container

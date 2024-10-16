@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	libraryLocation := os.Getenv("LIBRARY_LOCATION")
+	libraryLocation := os.Getenv("LF_LIBRARY_LOCATION")
 	serveApplication(libraryLocation)
 }
 

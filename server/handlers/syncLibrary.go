@@ -12,7 +12,7 @@ import (
 
 func SyncLibraryHandler(c *gin.Context) {
 
-	libraryLocation := os.Getenv("LIBRARY_LOCATION")
+	libraryLocation := os.Getenv("LF_LIBRARY_LOCATION")
 
 	// Delete all entries in the 'videos' table
 	// queryResult := database.Database.Delete(&model.Video{}) // This isn't allowed by GORM
